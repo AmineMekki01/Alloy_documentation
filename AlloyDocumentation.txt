@@ -1,0 +1,142 @@
+Signature 
+
+    it's something similar to classes in OOP. Objects.
+    Each signature defines the structure of it's objects, 
+    including fields (attributes or variables) and relationships
+    between objects.
+
+
+    Extends VS in 
+        + EXTENDS
+            - In the example below any machine cab be also a Server client, or neither, BUT NEVER BOTH. 
+            sig Machine {}
+            sig Server extends Machine {}
+            sig Client extends Machine {}
+            -  Disjoint        
+
+        + IN 
+            - In the example below any machine can be broken, online, both or neither (not disjoint)
+            sig Machine {}
+
+            sig Broken in Machine {}
+            sig Online in Machine {}
+
+
+        + extebds and in
+        sig Machine {}
+        sig Broken in Machine {}
+
+        sig Server extends Machine {}
+        sig Client extends Machine {}
+
+        A machine can be a Server, a Client, A Broken, a Server and Broken, a Client and Broken or not at all 
+
+    abstract 
+        - If we make a signature abstract, then all atoms of the signature will belong to extensions
+        There will be no atom that are just supertype and not any of the subtypes
+
+        - Example 
+
+        abstract sig Machine {}
+        sig Broken in Machine {}
+
+        sig Server extends Machine {}
+        sig Client extends Machine {}
+        Here any machine must be either a server or client. they still may or may not be broken
+
+        If nothing extending the abstract signature its ignored.
+
+    subtype and supertype 
+        - Its like a class and a super class 
+        - all subtypes are also their parent type. and they inherit properties and behaviors of their supertype
+
+
+        Example :
+            sig B {}
+            sig C in B {}
+
+            sig A {
+                , b: B
+                , c: C
+            } 
+
+                b relation can map to atoms in C.
+                c relation cannot map to elements of B because they are not also in C.
+
+            but what if we want to map to elements in B that are not also in C
+            sig A {
+                , b: B - C
+            }
+                b relation will map to element in B that are not also in C
+
+
+
+
+
+Fields
+    Attributes or variables, they are the components of an object in 
+    the model. they store information and data that defines the object 
+    and its behaviors
+    They can be of a type : int, string, references to other objects which allow us to define 
+    relationships between objects in the model.
+
+
+Predicates (pred)
+
+    Expressions that evaluate to either true or false. used ro specify conditions
+    and constraints on the objects in the model. 
+    We can express relationships and properties of the objects in the model
+
+
+fact  
+    A fact is a statement that specifies constraints or conditions that must 
+    hold in the model. They can be used to express relationships and properties
+    A fact consist of predicates and a scope which specifies the set of objects
+    in the model to which the predicates applies. The scope uses quantifiers followed by
+    a set of comprehenssion 
+    True by constrruction 
+
+    Example : 
+    // our class Person
+    sig Person {
+        name: String
+    }
+
+
+    fact allPersonsHaveNames {
+        // all persons have non empty names
+        all p: Person | p.name != ""
+    }
+
+Quantifiers
+
+
+
+
+Assertions propositions supposed to be valid and needs to verified.
+ ☎
+abstract sig FSObject {}
+sig Dir extends FSObject {}
+sig File extends FSObject {}
+    one sig FileSystem{
+    live: set FSObject,
+    root: Root
+    parent: (FSObject - root) -> one (Dir & live),
+    contents: (Dir & live ) -> live,
+}
+{live in root.*contents and contents = ~parent}
+one sig Root extends Dir{}
+
+
+
+define in ALLOY the constraint saying that a directory is not in one of its subdirectories
+
+
+
+
+Formal specification
+    Using syntax and visual aspects to describe, to analyze the behaviors of a system
+Alloy
+    Alloy is considered a formal specification language, because its a declarative modeling language based on 
+    sematics used to describe the relationships between atoms and define constraints 
+
